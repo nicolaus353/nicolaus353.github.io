@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sayur Lokal App</title>
+  <style>
+  body.dark {
+  background: #111;
+  color: #eee;
+}
+
+body.dark .card,
+body.dark .product-card {
+  background: #1e1e1e;
+  border-color: #444;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background: #222;
+  color: #eee;
+  border-color: #555;
+}
+
+body.dark .btn {
+  background: #38bdf8;
+  color: #000;
+}
+
+body.dark .btn-outline {
+  color: #eee;
+  border-color: #777;
+}
+
+body.dark .tab-bar {
+  background: #000;
+  border-color: #333;
+}
+
+body.dark h3,
+body.dark h4 {
+  color: #fff;
+}
+
+    body { font-family: sans-serif; margin: 0; background: #fff; }
+    .header { background: #166534; color: white; padding: 16px; font-weight: bold; font-size: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .tab-bar { position: fixed; bottom: 0; width: 100%; background: #fff; border-top: 1px solid #ccc; display: flex; justify-content: space-around; padding: 8px 0; z-index: 100; }
+    .tab-bar div { text-align: center; font-size: 12px; color: #444; cursor: pointer; }
+    .tab-bar div.active { color: #166534; font-weight: bold; }
+    .container { padding: 16px; padding-bottom: 80px; }
+    .section { margin-bottom: 24px; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 12px; margin-top: 12px; }
+    .btn { background: #16a34a; color: white; padding: 10px 16px; border-radius: 8px; border: none; cursor: pointer; }
+    .btn-outline { border: 1px solid #ccc; background: white; color: #333; padding: 6px 12px; border-radius: 6px; }
+    input, textarea, select { width: 100%; padding: 8px; margin-top: 6px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; }
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .product-card { border: 1px solid #ddd; border-radius: 8px; padding: 8px; text-align: center; }
+    .product-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    #toast { display:none; position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#166534; color:white; padding:10px 16px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="kece.png" alt="Logo" style="height: 28px; margin-right: 8px;" />
+    <span>Sayur Lokal</span>
+    <button class="btn-outline" onclick="toggleDarkMode()">🌓</button>
+  </div>
+
+  <div class="container">
+    <!-- LOGIN -->
+    <div id="login" class="screen active">
+      <h3>Masuk</h3>
+      <input type="text" id="loginUser" placeholder="Nama Pengguna" />
+      <button class="btn" onclick="loginUser()">Masuk</button>
+      <p>Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a></p>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="register" class="screen">
+      <h3>Daftar</h3>
+      <input type="text" id="regUser" placeholder="Nama Pengguna" />
+      <button class="btn" onclick="registerUser()">Daftar</button>
+      <p>Sudah punya akun? <a href="#" onclick="showLogin()">Masuk</a></p>
+    </div>
+
+    <!-- HOME -->
+    <div id="home" class="screen">
+      <h3>Rekomendasi Sayur</h3>
+      <div class="product-grid">
+        <div class="product-card">
+      <img src="bayam.jpg" alt="Bayam" />
+      <div>Bayam</div>
+      <div>Rp7.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Bayam', 7000)">+ Tambah</button>
+    </div>
+        <div class="product-card">
+      <img src="tomat.jpg" alt="Tomat" />
+      <div>Tomat</div>
+      <div>Rp20.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Tomat', 20000)">+ Tambah</button>
+        </div>
+          <div class="product-card">
+      <img src="wortel.jpg" alt="Wortel" />
+      <div>Wortel</div>
+      <div>Rp8.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Wortel', 8000)">+ Tambah</button>
+        </div>
+          <div class="product-card">
+      <img src="kentang.jpg" alt="Kentang" />
+      <div>Kentang</div>
+      <div>Rp17.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Kentang', 17000)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="brokoli.jpg" alt="Brokoli" />
+      <div>Brokoli</div>
+      <div>Rp28.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Brokoli', 28000)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="sawi.jpg" alt="Sawi" />
+      <div>Sawi</div>
+      <div>Rp7.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Sawi', 7000)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="timun.jpg" alt="Timun" />
+      <div>Timun</div>
+      <div>Rp6.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Timun', 6000)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="jagung.jpg" alt="Jagung" />
+      <div>Jagung</div>
+      <div>Rp7.500</div>
+      <button class="btn" onclick="tambahKeKeranjang('Jagung', 7500)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="terong.jpg" alt="Terong" />
+      <div>Terong</div>
+      <div>Rp9.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Terong', 9000)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="cabai.jpg" alt="Cabai rawit" />
+      <div>Cabai rawit</div>
+      <div>Rp45.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Cabai rawit', 45000)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="bawang putih.jpg" alt="Bawang putih" />
+      <div>Bawang putih</div>
+      <div>Rp45.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Bawang putih', 45000)">+ Tambah</button>
+        </div>
+        <div class="product-card">
+      <img src="kacang panjang.jpg" alt="Kacang panjang" />
+      <div>Kacang panjang</div>
+      <div>Rp20.000</div>
+      <button class="btn" onclick="tambahKeKeranjang('Kacang panjang', 20000)">+ Tambah</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PETANI -->
+    <div id="petani" class="screen">
+  <h3>Petani Lokal</h3>
+      <div class="card">
+      <div class="horizontal">
+      <img src="sari.jpeg" alt="Ibu Sari" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+      <div>
+        <b>Sari</b><br />
+        Kemiri, Salatiga<br />
+        Produk: Bayam, Tomat
+      </div>
+    </div>
+  </div>
+      <div class="card">
+    <div class="horizontal">
+      <img src="sari.jpeg" alt="Ibu Sari" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+      <div>
+        <b>Nur</b><br />
+        Tingkir, Salatiga<br />
+        Produk: Wortel, Sawi, Tomat
+      </div>
+    </div>
+  </div>
+      <div class="card">
+    <div class="horizontal">
+      <img src="sari.jpeg" alt="Ibu Sari" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+      <div>
+        <b>Gimin</b><br />
+        Bringin, Semarang<br />
+        Produk: Bayam, Terong, Bawang putih
+      </div>
+    </div>
+  </div>
+      <div class="card">
+    <div class="horizontal">
+      <img src="sari.jpeg" alt="Ibu Sari" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+      <div>
+        <b>Yanti</b><br />
+        Kauman, Salatiga<br />
+        Produk: Sawi, Terong, Brokoli
+      </div>
+    </div>
+  </div>
+      <div class="card">
+    <div class="horizontal">
+      <img src="sari.jpeg" alt="Ibu Sari" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+      <div>
+        <b>Warto</b><br />
+        Tengaran, Semarang<br />
+        Produk: Timun, Jagung, Cabai
+      </div>
+    </div>
+      </div>
+  <div class="card">
+    <div class="horizontal">
+      <img src="sari.jpeg" alt="Ibu Sari" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+      <div>
+        <b>Ratno</b><br />
+        Ampel, Boyolali<br />
+        Produk: Kentang, Kacang panjang
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+
+    <!-- KERANJANG -->
+    <div id="keranjang" class="screen">
+      <h3>Keranjang Belanja</h3>
+      <div id="isi-keranjang"></div>
+      <h4>🚚 Opsi Pengiriman</h4>
+      <label><input type="radio" name="pengiriman" value="rumah" checked /> 🏠 Langsung ke rumah</label><br />
+      <label><input type="radio" name="pengiriman" value="komunitas" /> 📍 Titik lokasi</label>
+      <h4>💳 Metode Pembayaran</h4>
+      <select id="metode">
+        <option value="transfer">🏦 Transfer Bank</option>
+        <option value="ewallet">📱 E-Wallet</option>
+        <option value="cod">💵 COD</option>
+      </select>
+      <button class="btn" onclick="checkout()">Bayar Sekarang</button>
+    </div>
+
+    <div id="edukasi" class="screen">
+      <h3>📚 Artikel Edukasi</h3>
+      <div class="card"><b>🤝 Kenapa Harus Beli dari Petani?</b><br />🌾 Segar, murah, bantu petani lokal.</div>
+      <h4>🍲 Forum Resep</h4>
+      <textarea id="resep" placeholder="✍️ Tulis resepmu..."></textarea>
+      <button class="btn" onclick="unggahResep()">📤 + Unggah Resepmu</button>
+      <div id="daftar-resep"></div>
+    </div>
+
+    <div id="profil" class="screen">
+      <h3>👤 Profil Pengguna</h3>
+      <input type="text" id="nama" placeholder="📝 Nama Anda" />
+      <input type="text" id="alamat" placeholder="📍 Alamat Lengkap" />
+      <button class="btn" onclick="simpanProfil()">💾 Simpan</button>
+      <br /><br />
+      <button class="btn-outline" onclick="logout()">🚪 Keluar</button>
+    </div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-bar" id="bottom-tab" style="display: none;">
+    <div id="tab-home" onclick="showTab('home')" class="active">🏠<br />Home</div>
+    <div id="tab-petani" onclick="showTab('petani')">👩‍🌾<br />Petani</div>
+    <div id="tab-keranjang" onclick="showTab('keranjang')">🛒<br />Keranjang</div>
+    <div id="tab-edukasi" onclick="showTab('edukasi')">📚<br />Edukasi</div>
+    <div id="tab-profil" onclick="showTab('profil')">👤<br />Profil</div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script>
+    function showTab(tab) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-bar div').forEach(t => t.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      document.getElementById('tab-' + tab).classList.add('active');
+      if (tab === 'keranjang') tampilkanKeranjang();
+    }
+    function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+    localStorage.setItem('mode', document.body.classList.contains('dark') ? 'dark' : 'light');
+  }
+
+  function restoreMode() {
+    const mode = localStorage.getItem('mode');
+    if (mode === 'dark') {
+      document.body.classList.add('dark');
+    }
+  }
+
+  window.onload = function () {
+    autoLogin();
+    restoreMode();
+  }
+    function loginUser() {
+      const user = document.getElementById('loginUser').value.trim();
+      if (user) {
+        localStorage.setItem('user', user);
+        showMain();
+        showToast('Selamat datang, ' + user);
+      }
+    }
+    function registerUser() {
+      const user = document.getElementById('regUser').value.trim();
+      if (user) {
+        localStorage.setItem('user', user);
+        showMain();
+        showToast('Pendaftaran berhasil');
+      }
+    }
+    function showLogin() {
+      showTab('login');
+      document.getElementById('bottom-tab').style.display = 'none';
+    }
+    function showRegister() {
+      showTab('register');
+      document.getElementById('bottom-tab').style.display = 'none';
+    }
+    function showMain() {
+      showTab('home');
+      document.getElementById('bottom-tab').style.display = 'flex';
+    }
+    function autoLogin() {
+      const user = localStorage.getItem('user');
+      if (user) showMain(); else showLogin();
+      const resepList = JSON.parse(localStorage.getItem('resepList') || '[]');
+      resepList.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerText = r;
+        document.getElementById('daftar-resep').appendChild(div);
+      });
+      tampilkanResep();
+    }
+    function checkout() {
+      const metode = document.getElementById('metode').value;
+      const pengiriman = document.querySelector('input[name=pengiriman]:checked').value;
+      showToast(`Pesanan via ${metode}, dikirim ke ${pengiriman}`);
+    }
+    function unggahResep() {
+  const val = document.getElementById('resep').value.trim();
+  if (val) {
+    let resep = JSON.parse(localStorage.getItem('resepList') || '[]');
+    resep.unshift(val);
+    localStorage.setItem('resepList', JSON.stringify(resep));
+    tampilkanResep();
+    document.getElementById('resep').value = '';
+    showToast('Resep berhasil diunggah');
+  }
+}
+  
+  function tampilkanResep() {
+  const resepList = JSON.parse(localStorage.getItem('resepList') || '[]');
+  const container = document.getElementById('daftar-resep');
+  container.innerHTML = ''; // reset
+  resepList.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `${r} <button onclick="hapusResep(${i})" style="float:right;background:red;color:white;border:none;border-radius:4px;padding:4px 8px;">❌</button>`;
+    container.appendChild(div);
+  });
+}
+
+function hapusResep(index) {
+  let resep = JSON.parse(localStorage.getItem('resepList') || '[]');
+  resep.splice(index, 1);
+  localStorage.setItem('resepList', JSON.stringify(resep));
+  tampilkanResep();
+}
+    function simpanProfil() {
+      localStorage.setItem('nama', document.getElementById('nama').value);
+      localStorage.setItem('alamat', document.getElementById('alamat').value);
+      showToast('Profil disimpan');
+    }
+    function logout() {
+      localStorage.removeItem('user');
+      showLogin();
+      showToast('Logout berhasil');
+    }
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.innerText = msg;
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 2000);
+    }
+
+    let keranjang = JSON.parse(localStorage.getItem('keranjang') || '[]');
+
+    function tambahKeKeranjang(nama, harga) {
+      keranjang.push({ nama, harga });
+      localStorage.setItem('keranjang', JSON.stringify(keranjang));
+      tampilkanKeranjang();
+      showToast(nama + ' ditambahkan');
+    }
+
+    function tampilkanKeranjang() {
+      const el = document.getElementById('isi-keranjang');
+      el.innerHTML = '';
+      let total = 0;
+      keranjang.forEach((item, i) => {
+        total += item.harga;
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `${item.nama} - Rp${item.harga.toLocaleString()} 
+          <button onclick="hapusItem(${i})" style="float:right; background:red; color:white; border:none; border-radius:4px; padding:4px 8px;">❌</button>`;
+        el.appendChild(div);
+      });
+      if (keranjang.length === 0) {
+        el.innerHTML = '<i>Keranjang kosong</i>';
+      }
+    }
+
+    function hapusItem(index) {
+      keranjang.splice(index, 1);
+      localStorage.setItem('keranjang', JSON.stringify(keranjang));
+      tampilkanKeranjang();
+    }
+
+    autoLogin();
+  </script>
+</body>
+</html>
